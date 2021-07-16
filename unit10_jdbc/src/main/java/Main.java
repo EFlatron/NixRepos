@@ -1,6 +1,6 @@
 
-import dao.ConnectorsDao;
-import dao.impl.JdbcConnectorsDao;
+import dao.ConnectionFactory;
+import dao.impl.JdbcConnectionFactory;
 import dao.LocationsDao;
 import dao.ProblemsDao;
 import dao.RoutesDao;
@@ -9,21 +9,22 @@ import dao.impl.JdbcLocationsDao;
 import dao.impl.JdbcProblemsDao;
 import dao.impl.JdbcRoutesDao;
 import dao.impl.JdbcSolutionsDao;
-import util.ShortestPath;
-import util.shortestPath.ShortestPathImpl;
+import impl.ShortestPathFinder;
+import impl.ShortestPathFinderImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
-        ConnectorsDao connector = new JdbcConnectorsDao();
+        ConnectionFactory connector = new JdbcConnectionFactory();
         try (Connection connection = connector.getConnection()) {
+            System.out.println("Start");
             LocationsDao locationsDao = new JdbcLocationsDao(connection);
             RoutesDao routesDao = new JdbcRoutesDao(connection);
             ProblemsDao problemsDao = new JdbcProblemsDao(connection);
             SolutionsDao solutionsDao = new JdbcSolutionsDao(connection);
-            ShortestPath pathService = new ShortestPathImpl(locationsDao, routesDao, problemsDao, solutionsDao);
+            ShortestPathFinder pathService = new ShortestPathFinderImpl(locationsDao, routesDao, problemsDao, solutionsDao);
             pathService.calculateTheProblems();
             System.out.println("Complete");
         } catch (SQLException e) {

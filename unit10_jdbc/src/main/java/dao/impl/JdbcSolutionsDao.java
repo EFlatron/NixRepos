@@ -1,6 +1,5 @@
 package dao.impl;
 
-import dao.AbstractJdbcDao;
 import dao.SolutionsDao;
 import entity.Solution;
 
@@ -9,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class JdbcSolutionsDao extends AbstractJdbcDao implements SolutionsDao {
+import static util.ExceptionHelper.printAndThrowSQLException;
+
+public class JdbcSolutionsDao implements SolutionsDao {
     private final Connection connection;
 
     private static final String SOLUTION = "INSERT INTO solutions (problem_id, cost) VALUES (?, ?)";

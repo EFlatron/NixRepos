@@ -1,9 +1,9 @@
-package util.shortestPath;
+package impl;
 
 import entity.Route;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DijkstraAlg {
     private final List<Node> nodes;
@@ -45,13 +45,10 @@ public class DijkstraAlg {
     }
 
     private List<Route> getRoutesOfNode(Node node) {
-        List<Route> list = new ArrayList<>();
-        for (Route n : routes) {
-            if (n.getFromId() == node.getLocationId()) {
-                list.add(n);
-            }
-        }
-        return list;
+        return routes
+                .stream()
+                .filter(n -> n.getFromId() == node.getLocationId())
+                .collect(Collectors.toList());
     }
 
     private Node getNextNode(Route route) {

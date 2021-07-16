@@ -1,4 +1,4 @@
-package util.shortestPath;
+package impl;
 
 import entity.Location;
 

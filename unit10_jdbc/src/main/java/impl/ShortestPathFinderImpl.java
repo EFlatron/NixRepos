@@ -1,4 +1,4 @@
-package util.shortestPath;
+package impl;
 
 import dao.LocationsDao;
 import dao.ProblemsDao;
@@ -8,37 +8,22 @@ import entity.Location;
 import entity.Problem;
 import entity.Route;
 import entity.Solution;
-import util.ShortestPath;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ShortestPathImpl implements ShortestPath {
-    private final LocationsDao locationsDao;
-    private final RoutesDao routesDao;
-    private final ProblemsDao problemsDao;
+public class ShortestPathFinderImpl implements ShortestPathFinder {
     private final SolutionsDao solutionsDao;
     private final List<Location> locations;
     private final List<Route> routes;
     private final List<Problem> problems;
 
-    public ShortestPathImpl(LocationsDao locationsDao, RoutesDao routesDao, ProblemsDao problemsDao, SolutionsDao solutionsDao) {
-        this.locationsDao = locationsDao;
-        this.routesDao = routesDao;
-        this.problemsDao = problemsDao;
+    public ShortestPathFinderImpl(LocationsDao locationsDao, RoutesDao routesDao, ProblemsDao problemsDao, SolutionsDao solutionsDao) {
         this.solutionsDao = solutionsDao;
-        locations = readAllLocations();
-        routes = readAllRoutes();
-        problems = readAllProblems();
-    }
-
-    private int calculateTheCost(Problem p) {
-        List<Node> nodes = createNodes();
-        DijkstraAlg dijkstraAlg = new DijkstraAlg(nodes, routes);
-        Node start = getNodeByLocationId(nodes, p.getFromId());
-        Node end = getNodeByLocationId(nodes, p.getToId());
-        return dijkstraAlg.minCost(start, end);
+        locations = locationsDao.readALl();
+        routes = routesDao.readALl();
+        problems = problemsDao.readALl();
     }
 
     public void calculateTheProblems() {
@@ -51,6 +36,14 @@ public class ShortestPathImpl implements ShortestPath {
             solutions.add(solution);
         }
         createSolutions(solutions);
+    }
+
+    private int calculateTheCost(Problem p) {
+        List<Node> nodes = createNodes();
+        DijkstraAlg dijkstraAlg = new DijkstraAlg(nodes, routes);
+        Node start = getNodeByLocationId(nodes, p.getFromId());
+        Node end = getNodeByLocationId(nodes, p.getToId());
+        return dijkstraAlg.minCost(start, end);
     }
 
     private List<Node> createNodes() {
@@ -67,18 +60,6 @@ public class ShortestPathImpl implements ShortestPath {
             }
         }
         throw new RuntimeException();
-    }
-
-    private List<Location> readAllLocations() {
-        return locationsDao.readALl();
-    }
-
-    private List<Route> readAllRoutes() {
-        return routesDao.readALl();
-    }
-
-    private List<Problem> readAllProblems() {
-        return problemsDao.readALl();
     }
 
     private void createSolutions(List<Solution> solutions) {

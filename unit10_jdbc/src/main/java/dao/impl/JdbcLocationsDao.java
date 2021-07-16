@@ -1,6 +1,5 @@
 package dao.impl;
 
-import dao.AbstractJdbcDao;
 import dao.LocationsDao;
 import entity.Location;
 
@@ -8,7 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcLocationsDao extends AbstractJdbcDao implements LocationsDao {
+import static util.ExceptionHelper.printAndThrowSQLException;
+
+public class JdbcLocationsDao implements LocationsDao {
     private static final String LOCATION = "SELECT * FROM locations";
 
     private final Connection connection;

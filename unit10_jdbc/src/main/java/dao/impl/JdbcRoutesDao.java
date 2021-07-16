@@ -1,6 +1,5 @@
 package dao.impl;
 
-import dao.AbstractJdbcDao;
 import dao.RoutesDao;
 import entity.Route;
 
@@ -8,7 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcRoutesDao extends AbstractJdbcDao implements RoutesDao {
+import static util.ExceptionHelper.printAndThrowSQLException;
+
+public class JdbcRoutesDao implements RoutesDao {
     private final Connection connection;
 
     private static final String ROUTES = "SELECT * FROM routes";

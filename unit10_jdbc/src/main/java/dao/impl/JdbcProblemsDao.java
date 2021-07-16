@@ -1,6 +1,5 @@
 package dao.impl;
 
-import dao.AbstractJdbcDao;
 import dao.ProblemsDao;
 import entity.Problem;
 
@@ -8,7 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcProblemsDao extends AbstractJdbcDao implements ProblemsDao {
+import static util.ExceptionHelper.printAndThrowSQLException;
+
+public class JdbcProblemsDao implements ProblemsDao {
     private final Connection connection;
 
     private static final String PROBLEMS = "SELECT * FROM problems";

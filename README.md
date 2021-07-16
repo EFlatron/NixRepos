@@ -1,1 +1,1 @@
-"# NixRepos" 
+- Use database.sql to create initial database schema
