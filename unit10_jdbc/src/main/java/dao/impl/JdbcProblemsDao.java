@@ -12,7 +12,9 @@ import static util.ExceptionHelper.printAndThrowSQLException;
 public class JdbcProblemsDao implements ProblemsDao {
     private final Connection connection;
 
-    private static final String PROBLEMS = "SELECT * FROM problems";
+    private static final String PROBLEMS = "SELECT pr.id, pr.from_id, pr.to_id " +
+            "FROM problems pr LEFT JOIN solutions s on pr.id = s.problem_id " +
+            "WHERE s.problem_id IS NULL";
 
     public JdbcProblemsDao(Connection connection) {
         this.connection = connection;
